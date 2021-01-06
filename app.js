@@ -19,7 +19,7 @@ figlet('Employee Tracker', function(err, data) {
     }
     console.log(data);
     mainMenu();
-    connection.end();
+    // connection.end();
 });
 //   songSearch();
 //   artistSearch("bing crosby");
@@ -55,7 +55,7 @@ function mainMenu() {
         })
         .then(answers => {
 
-            switch(answers.name) {
+            switch(answers.menu) {
                 case VIEW_EMPLOYEES:
                     allEmployees();
                     break;
@@ -81,11 +81,13 @@ function mainMenu() {
 };
 
 async function allEmployees(employeeslist) {
+    // console.log("hello");
     const SQL_STATEMENT = `SELECT * FROM employees`;
 
     const [rows,fields] = await connection.promise().query(SQL_STATEMENT, employeeslist);
 
     console.table(rows);
+    mainMenu();
 };
 
 
