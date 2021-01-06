@@ -50,7 +50,7 @@ function mainMenu() {
                 ADD_DEPARTMENT,
                 ADD_ROLE,
                 UPDATE_EMPLOYEE,
-                "I'm done"
+                "DONE"
             ]
         })
         .then(answers => {
@@ -87,8 +87,6 @@ async function allEmployees(employeeslist) {
 
     console.table(rows);
 };
-
-
 
 
 // function allEmployees() {
