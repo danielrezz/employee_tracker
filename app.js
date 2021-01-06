@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const figlet = require('figlet');
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -9,10 +10,16 @@ const connection = mysql.createConnection({
   database: 'employees_mainDB',
 });
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('connected as id ' + connection.threadId);
-  afterConnection();
+connection.connect(() => {
+figlet('Employee Tracker', function(err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log(data);
+    afterConnection();
+});
 //   songSearch();
 //   artistSearch("bing crosby");
 //   songSearch("my heart will go on");
