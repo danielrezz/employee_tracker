@@ -90,6 +90,48 @@ async function allEmployees(employeeslist) {
     mainMenu();
 };
 
+function addEmployee() {
+
+    inquirer
+        .prompt([
+        {
+        name: "firstname",
+        type: "input",
+        message: "What is the employee's first name"
+        },
+        {
+        name: "lastname",
+        type: "input",
+        message: "What is the employee's last name"
+        },
+        {
+        name: "role",
+        type: "list",
+        message: "What is the employee's role?",
+        choices: [
+            "Social Media Manager",
+            "Content Strategist",
+            "Front-End Developer",
+            "Back-End Developer",
+            "Boss",
+            "Salesperson",
+            "Database Administrator"
+        ]}
+        
+    ])
+        .then(function (answers) {
+            const SQL_STATEMENT = `INSERT INTO employees (first_name, last_name)
+            VALUES (${ answers.firstname }, ${ answers.lastname });`;
+
+            connection.query(SQL_STATEMENT);  //fix this connection!!
+            console.log("Employee successfully added!");
+            // console.table(rows);
+            mainMenu();
+        });
+
+
+}
+
 
 // function allEmployees() {
 
