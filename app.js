@@ -1,6 +1,12 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const figlet = require('figlet');
+const express = require("express");
+
+var app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -84,7 +90,6 @@ function mainMenu() {
 };
 
 async function allEmployees(employeeslist) {
-    // console.log("hello");
     const SQL_STATEMENT = `SELECT * FROM employees`;
 
     const [rows,fields] = await connection.promise().query(SQL_STATEMENT, employeeslist);
@@ -133,10 +138,16 @@ function addEmployee() {
         .then(async function (answers) {
             const SQL_STATEMENT = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?)";
 
-            const [rows,fields] = await connection.promise().query(SQL_STATEMENT, {first_name: answers.first_name, last_name: answers.last_name, role_id: 0, manager_id: 0 }, function (req, res) {
-                // console.log(answers);
-                console.table(rows);
-            }).catch(e => console.log(e));
+            const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
+                {
+                    first_name: answers.first_name,
+                    last_name: answers.last_name,
+                    role_id: 0,
+                    manager_id: 0
+                },
+                function (req, res) {
+                    console.table(rows);
+                }).catch(e => console.log(e));
             console.log("Employee successfully added!");
             mainMenu();
         });
