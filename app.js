@@ -133,14 +133,13 @@ function addEmployee() {
             "Daniel",
             "Kaylee"
         ]}
-        
     ])
         .then(async function (answers) {
-            const SQL_STATEMENT = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?)";
+            const SQL_STATEMENT = "INSERT INTO employees SET ?";
 
             const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
                 {
-                    "first_name": answers.first_name,
+                    first_name: answers.first_name,
                     last_name: answers.last_name,
                     role_id: 0,
                     manager_id: 0
