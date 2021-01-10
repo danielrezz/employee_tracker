@@ -74,6 +74,9 @@ function mainMenu() {
                 case ADD_ROLE:
                     addRole();
                     break;
+                case UPDATE_EMPLOYEE:
+                    updateEmployee();
+                    break;
                 default:
                     connection.end();
             };
@@ -95,17 +98,17 @@ function addEmployee() {
     inquirer
         .prompt([
         {
-        name: "firstname",
+        name: "first_name",
         type: "input",
         message: "What is the employee's first name"
         },
         {
-        name: "lastname",
+        name: "last_name",
         type: "input",
         message: "What is the employee's last name"
         },
         {
-        name: "role",
+        name: "role_id",
         type: "list",
         message: "What is the employee's role?",
         choices: [
@@ -116,17 +119,60 @@ function addEmployee() {
             "Boss",
             "Salesperson",
             "Database Administrator"
+        ]},
+        {
+        name: "manager_id",
+        type: "list",
+        message: "Who is the employee's manager?",
+        choices: [
+            "Daniel",
+            "Kaylee"
         ]}
         
     ])
-        .then(function (answers) {
-            const SQL_STATEMENT = `INSERT INTO employees (first_name, last_name)
-            VALUES (${ answers.firstname }, ${ answers.lastname });`;
+        .then(async function (answers) {
+            const SQL_STATEMENT = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?)";
 
-            connection.query(SQL_STATEMENT);  //fix this connection!!
+            const [rows,fields] = await connection.promise().query(SQL_STATEMENT, {first_name: answers.first_name, last_name: answers.last_name, role_id: 0, manager_id: 0 }, function (req, res) {
+                // console.log(answers);
+                console.table(rows);
+            }).catch(e => console.log(e));
             console.log("Employee successfully added!");
-            // console.table(rows);
             mainMenu();
+        });
+};
+
+function updateEmployee() {
+
+    let roleTable = [
+        {
+            id: 1,
+            title: "Salesperson"
+        },
+        {
+            id: 2,
+            title: "Social Media Manager"
+        }
+    ];
+
+    inquirer
+        .prompt([
+        {
+        name: "role",
+        type: "list",
+        message: "What role would you like to update?",
+        choices: roleTable.map(role => { role.title })
+        }
+    ])
+        .then(function (answers) {
+
+            // const SQL_STATEMENT = `INSERT INTO employees (first_name, last_name)
+            // VALUES (${ answers.firstname }, ${ answers.lastname });`;
+
+            // connection.query(SQL_STATEMENT);  //fix this connection!!
+            // console.log("Employee successfully added!");
+            // // console.table(rows);
+            // mainMenu();
         });
 
 
