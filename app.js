@@ -140,7 +140,7 @@ function addEmployee() {
 
             const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
                 {
-                    first_name: answers.first_name,
+                    "first_name": answers.first_name,
                     last_name: answers.last_name,
                     role_id: 0,
                     manager_id: 0
