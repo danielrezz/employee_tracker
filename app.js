@@ -198,14 +198,17 @@ function deleteEmployee() {
             }
         ])
         .then(function (answer) {
-            const SQL_STATEMENT = "DELETE FROM employees WHERE employee_id = ?"
+            const SQL_STATEMENT = "DELETE FROM employees WHERE employee_id = ?";
 
-            connection.query(SQL_STATEMENT, answer.employeeID, function(req, res) {
-            });
-
-            console.log("The employee has been successfully removed.");
-            mainMenu();
+            if (answer.employeeID) { //figure out how to get IF statement working 
+                connection.query(SQL_STATEMENT, answer.employeeID, function(err, res) {
+                    if (err) throw err;
+                    console.log("The employee has been successfully removed.");
+                    mainMenu();  
+                });
+            } else {
+                console.log("Please enter a valid employee ID.");
+                mainMenu();
+            }          
         });
-
-
 };
