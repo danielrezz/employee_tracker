@@ -29,3 +29,7 @@ CREATE TABLE department (
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Daniel", "Reza", 12345, 00000), ("Kaylee", "Reza", 54321, 00000);
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Boss", 300000.00, 1), ("Back-End Developer", 250000.00, 2), ("Content Strategist", 200000.00, 3), 
+("Database Administrator", 150000.00, 2), ("Front-End Developer", 250000.00, 2), ("Salesperson", 100000.00, 4), ("Social Media Manager", 200000.00, 3);

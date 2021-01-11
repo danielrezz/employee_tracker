@@ -99,6 +99,15 @@ async function allEmployees(employeeslist) {
     mainMenu();
 };
 
+async function allRoles(roles) {
+    const SQL_STATEMENT = `SELECT * FROM role`;
+
+    const [rows,fields] = await connection.promise().query(SQL_STATEMENT, roles);
+
+    console.table(rows);
+    mainMenu();
+};
+
 function addEmployee() {
 
     inquirer
@@ -118,13 +127,13 @@ function addEmployee() {
         type: "list",
         message: "What is the employee's role?",
         choices: [
-            "Social Media Manager",
-            "Content Strategist",
-            "Front-End Developer",
-            "Back-End Developer",
             "Boss",
+            "Back-End Developer",
+            "Content Strategist",
+            "Database Administrator",
+            "Front-End Developer",
             "Salesperson",
-            "Database Administrator"
+            "Social Media Manager"
         ]},
         {
         name: "manager_id",
