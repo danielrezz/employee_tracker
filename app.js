@@ -91,16 +91,24 @@ function mainMenu() {
 };
 
 async function allEmployees(employeeslist) {
-    const SQL_STATEMENT = `SELECT * FROM employees`;
+    const SQL_STATEMENT = `SELECT employees.employee_id, employees.first_name, employees.last_name, role.title, employees.manager_id
+    FROM employees
+    INNER JOIN role
+    ON employees.role_id = role.role_id`;
 
-    const [rows,fields] = await connection.promise().query(SQL_STATEMENT, employeeslist);
+    const TEMP_SQL_STATEMENT = `SELECT * FROM employees`;
+
+    const [rows,fields] = await connection.promise().query(TEMP_SQL_STATEMENT, employeeslist);
 
     console.table(rows);
     mainMenu();
 };
 
 async function allRoles(roles) {
-    const SQL_STATEMENT = `SELECT * FROM role`;
+    const SQL_STATEMENT = `SELECT employees.first_name, employees.last_name, role.role_id, role.title, role.salary
+    FROM employees
+    RIGHT JOIN role
+    ON employees.role_id = role.role_id`;
 
     const [rows,fields] = await connection.promise().query(SQL_STATEMENT, roles);
 
@@ -151,7 +159,7 @@ function addEmployee() {
                 {
                     first_name: answers.first_name,
                     last_name: answers.last_name,
-                    role_id: 0,
+                    role_id: 0, //need to work on setting this up
                     manager_id: 0
                 },
                 function (req, res) {
