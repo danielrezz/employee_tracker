@@ -17,20 +17,16 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(() => {
-figlet('Employee Tracker', function(err, data) {
-    if (err) {
-        console.log('Something went wrong...');
-        console.dir(err);
-        return;
-    }
-    console.log(data);
-    mainMenu();
-    // connection.end();
-});
-//   songSearch();
-//   artistSearch("bing crosby");
-//   songSearch("my heart will go on");
-//   songAndAlbumSearch("the beatles");
+    figlet('Employee Tracker', function (err, data) {
+        if (err) {
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        }
+        console.log(data);
+        mainMenu();
+        // connection.end();
+    });
 });
 
 function mainMenu() {
@@ -42,6 +38,7 @@ function mainMenu() {
     const ADD_DEPARTMENT = "Add new department";
     const ADD_ROLE = "Add new role";
     const UPDATE_EMPLOYEE = "Update employee role";
+    const DELETE_EMPLOYEE = "Delete existing employee";
 
     inquirer
         .prompt({
@@ -56,6 +53,7 @@ function mainMenu() {
                 ADD_DEPARTMENT,
                 ADD_ROLE,
                 UPDATE_EMPLOYEE,
+                DELETE_EMPLOYEE,
                 "DONE"
             ]
         })
@@ -82,6 +80,9 @@ function mainMenu() {
                     break;
                 case UPDATE_EMPLOYEE:
                     updateEmployee();
+                    break;
+                case DELETE_EMPLOYEE:
+                    deleteEmployee();
                     break;
                 default:
                     connection.end();
@@ -184,16 +185,27 @@ function updateEmployee() {
             // // console.table(rows);
             // mainMenu();
         });
+};
+
+function deleteEmployee() {
+
+    inquirer
+        .prompt([
+            {
+                name: "employeeID",
+                type: "input",
+                message: "What is the Employee's ID number?"
+            }
+        ])
+        .then(function (answer) {
+            const SQL_STATEMENT = "DELETE FROM employees WHERE employee_id = ?"
+
+            connection.query(SQL_STATEMENT, answer.employeeID, function(req, res) {
+            });
+
+            console.log("The employee has been successfully removed.");
+            mainMenu();
+        });
 
 
-}
-
-
-// function allEmployees() {
-
-//     connection.query("SELECT * FROM employees;", function(err, res) {
-//         if (err) throw err;
-//         console.log(res);
-//         connection.end(); //needed to end in last function
-//     });
-// };
+};
