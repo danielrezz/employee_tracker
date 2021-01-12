@@ -104,11 +104,17 @@ async function allEmployees(employeeslist) {
     mainMenu();
 };
 
+async function allDepartments(dept) {
+    const SQL_STATEMENT = `SELECT * FROM department`;
+
+    const [rows,fields] = await connection.promise().query(SQL_STATEMENT, dept);
+
+    console.table(rows);
+    mainMenu();
+};
+
 async function allRoles(roles) {
-    const SQL_STATEMENT = `SELECT employees.first_name, employees.last_name, role.role_id, role.title, role.salary
-    FROM employees
-    RIGHT JOIN role
-    ON employees.role_id = role.role_id`;
+    const SQL_STATEMENT = `SELECT role.role_id, role.title, role.salary FROM role`;
 
     const [rows,fields] = await connection.promise().query(SQL_STATEMENT, roles);
 
@@ -170,37 +176,65 @@ function addEmployee() {
         });
 };
 
-function updateEmployee() {
-
-    let roleTable = [
-        {
-            id: 1,
-            title: "Salesperson"
-        },
-        {
-            id: 2,
-            title: "Social Media Manager"
-        }
-    ];
+function addDepartment() {
 
     inquirer
         .prompt([
         {
-        name: "role",
-        type: "list",
-        message: "What role would you like to update?",
-        choices: roleTable.map(role => { role.title })
+        name: "dept_name",
+        type: "input",
+        message: "What is the name of this department?"
+        },
+        {
+        name: "dept_id",
+        type: "input",
+        message: "What is the ID of this department?"
         }
     ])
-        .then(function (answers) {
+        .then(async function (answers) {
+            const SQL_STATEMENT = "INSERT INTO department SET ?";
 
-            // const SQL_STATEMENT = `INSERT INTO employees (first_name, last_name)
-            // VALUES (${ answers.firstname }, ${ answers.lastname });`;
+            const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
+                {
+                    department_name: answers.dept_name,
+                    department_id: answers.dept_id
+                },
+                function (req, res) {
+                    console.table(rows);
+                }).catch(e => console.log(e));
+            console.log("Department successfully added!");
+            mainMenu();
+        });
+};
 
-            // connection.query(SQL_STATEMENT);  //fix this connection!!
-            // console.log("Employee successfully added!");
-            // // console.table(rows);
-            // mainMenu();
+function addRole() {
+
+    inquirer
+        .prompt([
+        {
+        name: "title",
+        type: "input",
+        message: "What is the title of this role?"
+        },
+        {
+        name: "salary",
+        type: "input",
+        message: "What is the salary of this role?"
+        }
+    ])
+        .then(async function (answers) {
+            const SQL_STATEMENT = "INSERT INTO role SET ?";
+
+            const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
+                {
+                    title: answers.title,
+                    salary: answers.salary
+                },
+                function (req, res) {
+                    console.table(rows);
+                }).catch(e => console.log(e));
+            console.log("Role successfully added!");
+            mainMenu();
         });
 };
 
@@ -217,6 +251,7 @@ function deleteEmployee() {
         .then(function (answer) {
             const SQL_STATEMENT = "DELETE FROM employees WHERE employee_id = ?";
 
+            console.log(typeof answer.employeeID);
             if (answer.employeeID) { //figure out how to get IF statement working 
                 connection.query(SQL_STATEMENT, answer.employeeID, function(err, res) {
                     if (err) throw err;
@@ -229,3 +264,59 @@ function deleteEmployee() {
             }          
         });
 };
+
+
+
+// function updateEmployee() {
+
+//     let roleTable = [
+//         {
+//             id: 1,
+//             title: "Back-End Developer"
+//         },
+//         {
+//             id: 2,
+//             title: "Social Media Manager"
+//         },
+//         {
+//             id: 3,
+//             title: "Salesperson"
+//         },
+//         {
+//             id: 4,
+//             title: "Salesperson"
+//         },
+//         {
+//             id: 5,
+//             title: "Salesperson"
+//         },
+//         {
+//             id: 6,
+//             title: "Salesperson"
+//         },
+//         {
+//             id: 7,
+//             title: "Salesperson"
+//         },
+//     ];
+
+//     inquirer
+//         .prompt([
+//         {
+//         name: "role",
+//         type: "list",
+//         message: "What role would you like to update?",
+//         choices: roleTable.map(role => { role.title })
+//         }
+//     ])
+//         .then(function (answers) {
+
+//             const SQL_STATEMENT = `INSERT INTO employees (first_name, last_name)
+//             VALUES (${ answers.firstname }, ${ answers.lastname });`;
+
+//             connection.query(SQL_STATEMENT);  //fix this connection!!
+//             console.log("Employee successfully added!");
+//             // console.table(rows);
+//             mainMenu();
+//         });
+// };
