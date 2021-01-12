@@ -238,6 +238,34 @@ function addRole() {
         });
 };
 
+
+function updateEmployee() {
+ 
+    inquirer
+        .prompt([
+        {
+        name: "employee_id",
+        type: "input",
+        message: "What is the ID of the employee you would like to update?"
+        }
+    ])
+        .then(async function (answers) {
+            const SQL_STATEMENT = "UPDATE employees SET ? WHERE employees.employee_id = ?";
+
+            // const [rows, fields] = await connection.promise().query(SQL_STATEMENT,
+            //     {
+            //         title: answers.title,
+            //         salary: answers.salary
+            //     },
+            //     function (req, res) {
+            //         console.table(rows);
+            //     }).catch(e => console.log(e));                                           STILL NEED TO FIX!!
+            console.log("System error... Please try again later.");
+            mainMenu();
+        });
+};
+
+
 function deleteEmployee() {
 
     inquirer
@@ -251,7 +279,6 @@ function deleteEmployee() {
         .then(function (answer) {
             const SQL_STATEMENT = "DELETE FROM employees WHERE employee_id = ?";
 
-            console.log(typeof answer.employeeID);
             if (answer.employeeID) { //figure out how to get IF statement working 
                 connection.query(SQL_STATEMENT, answer.employeeID, function(err, res) {
                     if (err) throw err;
