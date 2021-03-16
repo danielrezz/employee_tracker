@@ -2,7 +2,7 @@
     Employee Tracker
 </h1>
  
-![](Untitled_ Mar 15, 2021 10_01 PM.gif)
+![Untitled_ Mar 15, 2021 10_01 PM.gif]
 
 <h2>
     Summary
