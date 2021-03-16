@@ -2,7 +2,7 @@
     Employee Tracker
 </h1>
  
-![Untitled_.gif]
+![](Untitled_.gif)
 
 <h2>
     Summary
