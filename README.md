@@ -1,8 +1,8 @@
 <h1>
     Employee Tracker
 </h1>
-
-<iframe src="https://drive.google.com/file/d/1ZpVyFjM7rRhXWQO1S-QocwEKeCSuAkNT/preview" width="640" height="480"></iframe>
+ 
+![](Untitled_ Mar 15, 2021 10_01 PM.gif)
 
 <h2>
     Summary
